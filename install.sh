@@ -18,9 +18,17 @@ printf "
 "
 # Check if user is root
 [ $(id -u) != "0" ] && { echo "${CFAILURE}Error: You must be root to run this script${CEND}"; exit 1; }
+# ${CFAILURE} ${CEND} /include/color.sh 里面颜色
 
 oneinstack_dir=$(dirname "`readlink -f $0`")
-pushd ${oneinstack_dir} > /dev/null
+# 反引号括起来的字符串被shell解释为命令行，在执行时，shell首先执行该命令行，并以它的标准输出结果取代整个反引号（包括两个反引号）部分。
+# readlink - print resolved symbolic links or canonical file names 输出经过解析的符号链接值或权威文件名
+# -f, --canonicalize  canonicalize by following every symlink in every component of the given name recursively; all but the last component must exist
+# 递归跟随给出文件名的所有符号链接以标准化；除最后一个外所有组件必须存在
+# 也就是给出 install.sh 文件全路径的意思
+# dirname - strip last component from file name 去除文件名的最后一个组成部分,去除文件名中的非目录部分
+# 在此处就是获得 install.sh 当前文件目录，并赋值给变量 oneinstack_dir
+pushd ${oneinstack_dir} > /dev/null # 将目录添加到目录堆栈顶部，切换当前工作目录到该目录
 . ./versions.txt
 . ./options.conf
 . ./include/color.sh

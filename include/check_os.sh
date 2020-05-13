@@ -9,8 +9,10 @@
 #       https://github.com/oneinstack/oneinstack
 
 if [ -e "/usr/bin/yum" ]; then
+# -e 检测是否存在
   PM=yum
   command -v lsb_release >/dev/null 2>&1 || { [ -e "/etc/euleros-release" ] && yum -y install euleros-lsb || yum -y install redhat-lsb-core; clear; }
+  # || 遇到可以执行成功的命令就停止执行后面的命令
 fi
 if [ -e "/usr/bin/apt-get" ]; then
   PM=apt-get
@@ -57,9 +59,11 @@ fi
 if [ ${CentOS_ver} -lt 6 >/dev/null 2>&1 ] || [ ${Debian_ver} -lt 8 >/dev/null 2>&1 ] || [ ${Ubuntu_ver} -lt 14 >/dev/null 2>&1 ]; then
   echo "${CFAILURE}Does not support this OS, Please install CentOS 6+,Debian 8+,Ubuntu 14+ ${CEND}"
   kill -9 $$
+  # $$ 当前脚本的sid（执行的进程）
 fi
 
 LIBC_YN=$(awk -v A=$(getconf -a | grep GNU_LIBC_VERSION | awk '{print $NF}') -v B=2.14 'BEGIN{print(A>=B)?"0":"1"}')
+# getconf -a 查看全部系统变量
 [ ${LIBC_YN} == '0' ] && GLIBC_FLAG=linux-glibc_214 || GLIBC_FLAG=linux
 
 if uname -m | grep -Eqi "arm|aarch64"; then
