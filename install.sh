@@ -81,8 +81,11 @@ Show_Help() {
   "
 }
 ARG_NUM=$#
+# $# 传递给脚本或函数的参数个数。
 TEMP=`getopt -o hvV --long help,version,nginx_option:,apache_option:,apache_mode_option:,apache_mpm_option:,php_option:,mphp_ver:,mphp_addons,phpcache_option:,php_extensions:,tomcat_option:,jdk_option:,db_option:,dbrootpwd:,dbinstallmethod:,pureftpd,redis,memcached,phpmyadmin,hhvm,python,ssh_port:,iptables,reboot -- "$@" 2>/dev/null`
+# ``内执行后的结果赋值给TEMP
 [ $? != 0 ] && echo "${CWARNING}ERROR: unknown argument! ${CEND}" && Show_Help && exit 1
+# $? 上个命令的退出状态，或函数的返回值
 eval set -- "${TEMP}"
 while :; do
   [ -z "$1" ] && break;
@@ -257,6 +260,7 @@ if [ ${ARG_NUM} == 0 ]; then
 
   # check Web server
   while :; do echo
+  # while : 代表无限循环，直到break
     read -e -p "Do you want to install Web server? [y/n]: " web_flag
     if [[ ! ${web_flag} =~ ^[y,n]$ ]]; then
       echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"

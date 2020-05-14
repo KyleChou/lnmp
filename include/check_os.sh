@@ -63,7 +63,7 @@ if [ ${CentOS_ver} -lt 6 >/dev/null 2>&1 ] || [ ${Debian_ver} -lt 8 >/dev/null 2
 fi
 
 LIBC_YN=$(awk -v A=$(getconf -a | grep GNU_LIBC_VERSION | awk '{print $NF}') -v B=2.14 'BEGIN{print(A>=B)?"0":"1"}')
-# getconf -a 查看全部系统变量
+# getconf -a 查看全部系统变量  GNU_LIBC_VERSION glibc 版本   'BEGIN{print(A>=B)?"0":"1"}' 符合条件0 不符合1
 [ ${LIBC_YN} == '0' ] && GLIBC_FLAG=linux-glibc_214 || GLIBC_FLAG=linux
 
 if uname -m | grep -Eqi "arm|aarch64"; then

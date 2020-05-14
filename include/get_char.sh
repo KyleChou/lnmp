@@ -10,6 +10,7 @@
 
 get_char() {
   SAVEDSTTY=`stty -g`
+  # 以stty可读方式打印当前的所有配置。
   stty -echo
   stty cbreak
   dd if=/dev/tty bs=1 count=1 2> /dev/null
